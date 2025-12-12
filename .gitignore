@@ -10,5 +10,5 @@ out/
 .DS_Store
 Thumbs.db
 
-# Docker
+# Docker volumes
 postgres_data/
