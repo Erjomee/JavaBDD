@@ -1,18 +1,48 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Entrée with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        String url = "jdbc:postgresql://db:5432/mydb";
+        String user = "myuser";
+        String password = "mypassword";
 
-        // Press Maj+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement()) {
 
-            // Press Maj+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-            System.out.println("i = " + i);
+            // 1️⃣ Créer la table si elle n'existe pas
+            String createTable = "CREATE TABLE IF NOT EXISTS personne (" +
+                    "id SERIAL PRIMARY KEY," +
+                    "nom VARCHAR(50)," +
+                    "age INT" +
+                    ")";
+            stmt.executeUpdate(createTable);
+            System.out.println("Table 'personne' créée ou déjà existante.");
+
+            // 2️⃣ Vider la table avant d'insérer
+            stmt.executeUpdate("TRUNCATE TABLE personne RESTART IDENTITY");
+            System.out.println("Table vidée.");
+
+            // 3️⃣ Insérer les données
+            String insertData = "INSERT INTO personne (nom, age) VALUES " +
+                    "('Alice', 25)," +
+                    "('Bob', 30)," +
+                    "('Charlie', 22)";
+            stmt.executeUpdate(insertData);
+            System.out.println("Données insérées.");
+
+            // 4️⃣ Lire et afficher les données
+            ResultSet rs = stmt.executeQuery("SELECT * FROM personne");
+            System.out.println("\n=== Contenu de la table 'personne' ===");
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " | " +
+                        rs.getString("nom") + " | " +
+                        rs.getInt("age"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

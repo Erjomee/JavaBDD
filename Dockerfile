@@ -2,18 +2,22 @@
 FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 
-# Copier le code source
-COPY src ./src
+# Copier le fichier source Java
+COPY src/Main.java .
 
-# Compiler tous les fichiers .java
-RUN find src -name "*.java" > sources.txt \
-    && javac @sources.txt -d out
+# Télécharger le driver PostgreSQL JDBC
+RUN curl -L https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -o postgresql.jar
+
+# Compiler le programme Java
+RUN mkdir out && javac -cp postgresql.jar Main.java -d out
 
 # Étape 2 : Runtime
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
+# Copier les fichiers compilés depuis l'étape de build
 COPY --from=build /app/out ./out
+COPY --from=build /app/postgresql.jar .
 
-# Remplace Main par ta classe principale
-CMD ["java", "-cp", "out", "Main"]
+# Lancer le programme avec le driver JDBC
+CMD ["java", "-cp", "out:postgresql.jar", "Main"]
