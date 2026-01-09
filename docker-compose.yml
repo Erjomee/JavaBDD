@@ -16,6 +16,9 @@ services:
     container_name: java_app
     depends_on:
       - db
+    stdin_open: true
+    tty: true
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
       SPRING_DATASOURCE_USERNAME: myuser
