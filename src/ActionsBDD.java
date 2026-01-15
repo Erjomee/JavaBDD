@@ -2,17 +2,22 @@ import java.util.List;
 
 public interface ActionsBDD {
 
+    // ===== Programmeurs =====
     List<Programmeur> afficherTousLesProgrammeurs();
-
     Programmeur afficherProgrammeurParId(int id);
-
+    boolean ajouterProgrammeur(Programmeur p);
     boolean supprimerProgrammeur(int id);
 
-    boolean ajouterProgrammeur(Programmeur p);
-
     boolean modifierSalaire(int id, double nouveauSalaire);
-
-    List<Projet> afficherProjets();
+    boolean modifierPrime(int id, double nouvellePrime);
+    boolean modifierProjet(int id, int idProjet); // idProjet = 0 => aucun projet
 
     List<Programmeur> afficherProgrammeursParProjet(int idProjet);
+
+    // ===== Projets =====
+    List<Projet> afficherProjets();
+    boolean ajouterProjet(Projet p);
+
+    // ✅ NOUVEAU
+    boolean supprimerProjet(int idProjet);
 }
