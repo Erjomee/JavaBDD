@@ -4,7 +4,7 @@ WORKDIR /app
 # Copier les sources
 COPY src ./src
 
-# Compiler le projet
+# Compiler le projet (sans Gson, tout est en pur Java)
 RUN find src -name "*.java" > sources.txt \
     && javac @sources.txt -d out
 
@@ -19,5 +19,8 @@ RUN apt-get update \
 # Copier les classes compilées
 COPY --from=build /app/out ./out
 
-# Lancer l'application avec le driver dans le classpath
-CMD ["java", "-cp", "out:/usr/share/java/postgresql.jar", "Start"]
+# Exposer le port 8080 pour l'API REST
+EXPOSE 8080
+
+# Lancer le serveur REST
+CMD ["java", "-cp", "out:/usr/share/java/postgresql.jar", "RestController"]
