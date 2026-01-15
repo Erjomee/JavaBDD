@@ -294,7 +294,7 @@ const App = () => {
                                             <div><span className="font-semibold">ID:</span> {filteredProgrammer.id}</div>
                                             <div><span className="font-semibold">Nom:</span> {filteredProgrammer.nom}</div>
                                             <div><span className="font-semibold">Prénom:</span> {filteredProgrammer.prenom}</div>
-                                            <div><span className="font-semibold">Année:</span> {filteredProgrammer.anNaissance}</div>
+                                            <div><span className="font-semibold">Année de naissance:</span> {filteredProgrammer.anNaissance}</div>
                                             <div><span className="font-semibold">Salaire:</span> {filteredProgrammer.salaire.toLocaleString()} €</div>
                                             <div><span className="font-semibold">Prime:</span> {filteredProgrammer.prime.toLocaleString()} €</div>
                                             <div className="col-span-2"><span className="font-semibold">Projet:</span> {getProjectName(filteredProgrammer.idProjet)}</div>
@@ -324,7 +324,7 @@ const App = () => {
                                                     </div>
                                                     <div className="grid grid-cols-3 gap-4 text-sm">
                                                         <div>
-                                                            <span className="text-gray-500">Année:</span>
+                                                            <span className="text-gray-500">Année de naissance:</span>
                                                             <div className="font-semibold text-gray-800">{programmer.anNaissance}</div>
                                                         </div>
                                                         <div>

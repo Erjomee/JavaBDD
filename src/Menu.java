@@ -37,7 +37,7 @@ public class Menu {
         System.out.println("7. Programmeurs d’un même projet");
         System.out.println("8. Quitter le programme");
         System.out.print("Votre choix : ");
-        System.out.flush(); // 🔥 IMPORTANT
+        System.out.flush();
     }
 
     private void afficherProgrammeur() {
