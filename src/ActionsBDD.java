@@ -1,16 +1,18 @@
+import java.util.List;
+
 public interface ActionsBDD {
 
-    void afficherTousLesProgrammeurs();
+    List<Programmeur> afficherTousLesProgrammeurs();
 
-    void afficherProgrammeurParId(int id);
+    Programmeur afficherProgrammeurParId(int id);
 
     boolean supprimerProgrammeur(int id);
 
-    void ajouterProgrammeur(Programmeur p);
+    boolean ajouterProgrammeur(Programmeur p);
 
     boolean modifierSalaire(int id, double nouveauSalaire);
 
-    void afficherProjets();
+    List<Projet> afficherProjets();
 
-    void afficherProgrammeursParProjet(int idProjet);
+    List<Programmeur> afficherProgrammeursParProjet(int idProjet);
 }

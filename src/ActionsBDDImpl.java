@@ -2,8 +2,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActionsBDDImpl implements ActionsBDD {
+
     private static final String SELECT_ALL_PROGRAMMEURS =
             "SELECT * FROM programmeur";
 
@@ -27,29 +30,30 @@ public class ActionsBDDImpl implements ActionsBDD {
             "SELECT * FROM programmeur WHERE id_projet = ?";
 
     /* =========================
-       MÉTHODES
+       PROGRAMMEURS
        ========================= */
 
     @Override
-    public void afficherTousLesProgrammeurs() {
+    public List<Programmeur> afficherTousLesProgrammeurs() {
+        List<Programmeur> liste = new ArrayList<>();
+
         try (Connection conn = ConnexionBDD.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_ALL_PROGRAMMEURS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                System.out.println(rs.getInt("id_programmeur") + " | "
-                        + rs.getString("nom") + " "
-                        + rs.getString("prenom") + " | Salaire : "
-                        + rs.getDouble("salaire"));
+                Programmeur p = mapProgrammeur(rs);
+                liste.add(p);
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'affichage des programmeurs.");
+            e.printStackTrace();
         }
+        return liste;
     }
 
     @Override
-    public void afficherProgrammeurParId(int id) {
+    public Programmeur afficherProgrammeurParId(int id) {
         try (Connection conn = ConnexionBDD.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_PROGRAMMEUR_BY_ID)) {
 
@@ -57,38 +61,17 @@ public class ActionsBDDImpl implements ActionsBDD {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                System.out.println("ID : " + rs.getInt("id_programmeur"));
-                System.out.println("Nom : " + rs.getString("nom"));
-                System.out.println("Prénom : " + rs.getString("prenom"));
-                System.out.println("Salaire : " + rs.getDouble("salaire"));
-                System.out.println("Prime : " + rs.getDouble("prime"));
-            } else {
-                System.out.println("Aucun programmeur trouvé avec cet ID.");
+                return mapProgrammeur(rs);
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la recherche du programmeur.");
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public boolean supprimerProgrammeur(int id) {
-        try (Connection conn = ConnexionBDD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_PROGRAMMEUR)) {
-
-            ps.setInt(1, id);
-            int lignes = ps.executeUpdate();
-
-            return lignes > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression.");
-            return false;
-        }
-    }
-
-    @Override
-    public void ajouterProgrammeur(Programmeur p) {
+    public boolean ajouterProgrammeur(Programmeur p) {
         try (Connection conn = ConnexionBDD.getConnection();
              PreparedStatement ps = conn.prepareStatement(INSERT_PROGRAMMEUR)) {
 
@@ -99,11 +82,25 @@ public class ActionsBDDImpl implements ActionsBDD {
             ps.setDouble(5, p.getPrime());
             ps.setInt(6, p.getIdProjet());
 
-            ps.executeUpdate();
-            System.out.println("Programmeur ajouté avec succès.");
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout du programmeur.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean supprimerProgrammeur(int id) {
+        try (Connection conn = ConnexionBDD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(DELETE_PROGRAMMEUR)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -115,54 +112,73 @@ public class ActionsBDDImpl implements ActionsBDD {
             ps.setDouble(1, nouveauSalaire);
             ps.setInt(2, id);
 
-            int lignes = ps.executeUpdate();
-            return lignes > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la modification du salaire.");
+            e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public void afficherProjets() {
-        try (Connection conn = ConnexionBDD.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SELECT_ALL_PROJETS);
-             ResultSet rs = ps.executeQuery()) {
+    public List<Programmeur> afficherProgrammeursParProjet(int idProjet) {
+        List<Programmeur> liste = new ArrayList<>();
 
-            while (rs.next()) {
-                System.out.println(rs.getInt("id_projet") + " | "
-                        + rs.getString("intitule") + " | "
-                        + rs.getString("etat"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'affichage des projets.");
-        }
-    }
-
-    @Override
-    public void afficherProgrammeursParProjet(int idProjet) {
         try (Connection conn = ConnexionBDD.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_PROGRAMMEURS_BY_PROJET)) {
 
             ps.setInt(1, idProjet);
             ResultSet rs = ps.executeQuery();
 
-            boolean vide = true;
-
             while (rs.next()) {
-                vide = false;
-                System.out.println(rs.getString("nom") + " "
-                        + rs.getString("prenom"));
-            }
-
-            if (vide) {
-                System.out.println("Aucun programmeur pour ce projet.");
+                liste.add(mapProgrammeur(rs));
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'affichage des programmeurs du projet.");
+            e.printStackTrace();
         }
+        return liste;
+    }
+
+    /* =========================
+       PROJETS
+       ========================= */
+
+    @Override
+    public List<Projet> afficherProjets() {
+        List<Projet> projets = new ArrayList<>();
+
+        try (Connection conn = ConnexionBDD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SELECT_ALL_PROJETS);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Projet p = new Projet();
+                p.setIdProjet(rs.getInt("id_projet"));
+                p.setNomProjet(rs.getString("intitule"));
+                p.setStatut(rs.getString("etat"));
+                projets.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return projets;
+    }
+
+    /* =========================
+       MAPPING
+       ========================= */
+
+    private Programmeur mapProgrammeur(ResultSet rs) throws SQLException {
+        Programmeur p = new Programmeur();
+        p.setIdProgrammeur(rs.getInt("id_programmeur"));
+        p.setNom(rs.getString("nom"));
+        p.setPrenom(rs.getString("prenom"));
+        p.setAnNaissance(rs.getInt("an_naissance"));
+        p.setSalaire(rs.getDouble("salaire"));
+        p.setPrime(rs.getDouble("prime"));
+        p.setIdProjet(rs.getInt("id_projet"));
+        return p;
     }
 }
