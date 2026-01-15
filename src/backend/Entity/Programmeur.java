@@ -1,3 +1,5 @@
+package backend.Entity;
+
 public class Programmeur {
 
     private int idProgrammeur;
@@ -83,7 +85,7 @@ public class Programmeur {
 
     @Override
     public String toString() {
-        return "Programmeur{" +
+        return "backend.Entity.Programmeur{" +
                 "id=" + idProgrammeur +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +

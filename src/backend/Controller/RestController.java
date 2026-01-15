@@ -1,3 +1,9 @@
+package backend.Controller;
+
+import backend.Entity.Programmeur;
+import backend.Entity.Projet;
+import backend.Repository.ActionsBDD;
+import backend.Repository.ActionsBDDImpl;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -47,7 +53,7 @@ public class RestController {
                 boolean success = actions.ajouterProgrammeur(programmeur);
 
                 if (success) {
-                    sendResponse(exchange, 201, "{\"message\":\"Programmeur ajouté\"}");
+                    sendResponse(exchange, 201, "{\"message\":\"backend.Entity.Programmeur ajouté\"}");
                 } else {
                     sendResponse(exchange, 500, "{\"error\":\"Erreur lors de l'ajout\"}");
                 }
@@ -87,15 +93,15 @@ public class RestController {
                         String response = programmeurToJson(programmeur);
                         sendResponse(exchange, 200, response);
                     } else {
-                        sendResponse(exchange, 404, "{\"error\":\"Programmeur non trouvé\"}");
+                        sendResponse(exchange, 404, "{\"error\":\"backend.Entity.Programmeur non trouvé\"}");
                     }
 
                 } else if (method.equals("DELETE")) {
                     boolean success = actions.supprimerProgrammeur(id);
                     if (success) {
-                        sendResponse(exchange, 200, "{\"message\":\"Programmeur supprimé\"}");
+                        sendResponse(exchange, 200, "{\"message\":\"backend.Entity.Programmeur supprimé\"}");
                     } else {
-                        sendResponse(exchange, 404, "{\"error\":\"Programmeur non trouvé\"}");
+                        sendResponse(exchange, 404, "{\"error\":\"backend.Entity.Programmeur non trouvé\"}");
                     }
 
                 } else if (method.equals("PUT")) {
@@ -106,7 +112,7 @@ public class RestController {
                     if (success) {
                         sendResponse(exchange, 200, "{\"message\":\"Salaire modifié\"}");
                     } else {
-                        sendResponse(exchange, 404, "{\"error\":\"Programmeur non trouvé\"}");
+                        sendResponse(exchange, 404, "{\"error\":\"backend.Entity.Programmeur non trouvé\"}");
                     }
                 } else {
                     sendResponse(exchange, 405, "{\"error\":\"Méthode non autorisée\"}");
@@ -199,7 +205,7 @@ public class RestController {
                 .replace("\t", "\\t");
     }
 
-    // Parser un JSON simple vers un objet Programmeur
+    // Parser un JSON simple vers un objet backend.Entity.Programmeur
     private static Programmeur jsonToProgrammeur(String json) {
         Programmeur p = new Programmeur();
 

@@ -1,3 +1,5 @@
+package backend.Entity;
+
 import java.sql.Date;
 
 public class Projet {
@@ -64,7 +66,7 @@ public class Projet {
 
     @Override
     public String toString() {
-        return "Projet{" +
+        return "backend.Entity.Projet{" +
                 "id=" + idProjet +
                 ", nom='" + nom_projet + '\'' +
                 ", debut=" + dateDebut +

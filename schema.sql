@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS programmeur CASCADE;
 DROP TABLE IF EXISTS projet CASCADE;
 
--- Table Projet
+-- Table backend.Entity.Projet
 CREATE TABLE projet (
                         id_projet SERIAL PRIMARY KEY,
                         nom_projet VARCHAR(200) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE projet (
                         statut VARCHAR(50) CHECK (statut IN ('En cours', 'Terminé', 'En attente', 'Annulé'))
 );
 
--- Table Programmeur (avec clé étrangère vers projet)
+-- Table backend.Entity.Programmeur (avec clé étrangère vers projet)
 CREATE TABLE programmeur (
                              id_programmeur SERIAL PRIMARY KEY,
                              nom VARCHAR(100) NOT NULL,

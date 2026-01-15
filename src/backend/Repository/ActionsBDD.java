@@ -1,3 +1,8 @@
+package backend.Repository;
+
+import backend.Entity.Programmeur;
+import backend.Entity.Projet;
+
 import java.util.List;
 
 public interface ActionsBDD {

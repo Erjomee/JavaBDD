@@ -1,3 +1,9 @@
+package backend;
+
+import backend.Entity.Programmeur;
+import backend.Repository.ActionsBDD;
+import backend.Repository.ActionsBDDImpl;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -55,7 +61,7 @@ public class Menu {
         boolean succes = actions.supprimerProgrammeur(id);
 
         if (succes) {
-            System.out.println("Programmeur supprimé avec succès.");
+            System.out.println("backend.Entity.Programmeur supprimé avec succès.");
         } else {
             System.out.println("Aucun programmeur trouvé avec cet ID.");
         }

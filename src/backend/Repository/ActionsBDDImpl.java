@@ -1,3 +1,8 @@
+package backend.Repository;
+
+import backend.Entity.Programmeur;
+import backend.Entity.Projet;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

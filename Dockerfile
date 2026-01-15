@@ -23,4 +23,4 @@ COPY --from=build /app/out ./out
 EXPOSE 8080
 
 # Lancer le serveur REST
-CMD ["java", "-cp", "out:/usr/share/java/postgresql.jar", "RestController"]
+CMD ["java", "-cp", "out:/usr/share/java/postgresql.jar", "backend.Controller.RestController"]
