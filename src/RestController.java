@@ -182,7 +182,7 @@ public class RestController {
     // Convertir un projet en JSON
     private static String projetToJson(Projet p) {
         return String.format(
-                "{\"idProjet\":%d,\"nomProjet\":\"%s\",\"statut\":\"%s\"}",
+                "{\"idProjet\":%d,\"nom_projet\":\"%s\",\"statut\":\"%s\"}",
                 p.getIdProjet(),
                 escapeJson(p.getNomProjet()),
                 escapeJson(p.getStatut())

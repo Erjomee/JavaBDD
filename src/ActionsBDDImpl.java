@@ -155,8 +155,8 @@ public class ActionsBDDImpl implements ActionsBDD {
             while (rs.next()) {
                 Projet p = new Projet();
                 p.setIdProjet(rs.getInt("id_projet"));
-                p.setNomProjet(rs.getString("intitule"));
-                p.setStatut(rs.getString("etat"));
+                p.setNomProjet(rs.getString("nom_projet"));
+                p.setStatut(rs.getString("statut"));
                 projets.add(p);
             }
 

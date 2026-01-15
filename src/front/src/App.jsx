@@ -62,8 +62,8 @@ const App = () => {
             // Mapper les noms de champs Java vers JavaScript
             const mappedData = data.map(p => ({
                 id: p.idProjet,
-                intitule: p.nomProjet,
-                etat: p.statut
+                nom_projet: p.nom_projet,
+                statut: p.statut
             }));
             setProjects(mappedData);
         } catch (err) {
@@ -178,7 +178,7 @@ const App = () => {
 
     const getProjectName = (idProjet) => {
         const project = projects.find(p => p.id === idProjet);
-        return project ? project.intitule : 'N/A';
+        return project ? project.nom_projet : 'N/A';
     };
 
     const getProgrammersByProject = (projectId) => {
@@ -379,14 +379,14 @@ const App = () => {
                                                         <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-bold">
                                                             ID: {project.id}
                                                         </span>
-                                                        <h3 className="text-2xl font-bold text-gray-800">{project.intitule}</h3>
+                                                        <h3 className="text-2xl font-bold text-gray-800">{project.nom_projet}</h3>
                                                     </div>
                                                     <span className={`inline-block px-3 py-1 rounded-lg text-sm font-semibold ${
-                                                        project.etat === 'En cours'
+                                                        project.statut === 'En cours'
                                                             ? 'bg-yellow-100 text-yellow-800'
                                                             : 'bg-green-100 text-green-800'
                                                     }`}>
-                                                        {project.etat}
+                                                        {project.statut}
                                                     </span>
                                                 </div>
                                             </div>
@@ -502,7 +502,7 @@ const App = () => {
                                             <option value="">Sélectionner un projet</option>
                                             {projects.map(project => (
                                                 <option key={project.id} value={project.id}>
-                                                    {project.intitule}
+                                                    {project.nom_projet}
                                                 </option>
                                             ))}
                                         </select>

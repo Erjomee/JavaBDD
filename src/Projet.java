@@ -3,7 +3,7 @@ import java.sql.Date;
 public class Projet {
 
     private int idProjet;
-    private String nomProjet;
+    private String nom_projet;
     private Date dateDebut;
     private Date dateFin;
     private String statut;
@@ -13,9 +13,9 @@ public class Projet {
     }
 
     // Constructeur complet
-    public Projet(int idProjet, String nomProjet, Date dateDebut, Date dateFin, String statut) {
+    public Projet(int idProjet, String nom_projet, Date dateDebut, Date dateFin, String statut) {
         this.idProjet = idProjet;
-        this.nomProjet = nomProjet;
+        this.nom_projet = nom_projet;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.statut = statut;
@@ -31,11 +31,11 @@ public class Projet {
     }
 
     public String getNomProjet() {
-        return nomProjet;
+        return nom_projet;
     }
 
-    public void setNomProjet(String nomProjet) {
-        this.nomProjet = nomProjet;
+    public void setNomProjet(String nom_projet) {
+        this.nom_projet = nom_projet;
     }
 
     public Date getDateDebut() {
@@ -66,7 +66,7 @@ public class Projet {
     public String toString() {
         return "Projet{" +
                 "id=" + idProjet +
-                ", nom='" + nomProjet + '\'' +
+                ", nom='" + nom_projet + '\'' +
                 ", debut=" + dateDebut +
                 ", fin=" + dateFin +
                 ", statut='" + statut + '\'' +
