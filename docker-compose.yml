@@ -19,22 +19,48 @@ services:
     networks:
       - backend
 
-  app:
+  # Service REST API (pour le front)
+  app-rest:
     build: .
-    container_name: java_app
+    container_name: java_app_rest
     ports:
       - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
-    stdin_open: true
-    tty: true
     environment:
+      APP_MODE: rest
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: mypassword
     networks:
       - backend
+
+  # Service Console (pour le menu interactif)
+  app-console:
+    build: .
+    container_name: java_app_console
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "echo '==========================================';
+       echo 'Container pret - Utilisez le script console.bat';
+       echo 'ou: docker exec -it java_app_console java -cp out:/usr/share/java/postgresql.jar backend.Start';
+       echo '==========================================';
+       tail -f /dev/null"
+    environment:
+      APP_MODE: console
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    networks:
+      - backend
+    profiles:
+      - console
 
 networks:
   backend:

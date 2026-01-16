@@ -22,5 +22,12 @@ COPY --from=build /app/out ./out
 # Exposer le port 8080 pour l'API REST
 EXPOSE 8080
 
-# Lancer le serveur REST
-CMD ["java", "-cp", "out:/usr/share/java/postgresql.jar", "backend.Controller.RestController"]
+# Variable d'environnement pour choisir le mode (rest ou console)
+ENV APP_MODE=rest
+
+# Script de démarrage qui choisit le mode
+CMD if [ "$APP_MODE" = "console" ]; then \
+        java -cp "out:/usr/share/java/postgresql.jar" backend.Start; \
+    else \
+        java -cp "out:/usr/share/java/postgresql.jar" backend.Controller.RestController; \
+    fi
