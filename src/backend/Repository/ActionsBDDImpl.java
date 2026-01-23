@@ -7,47 +7,71 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implémentation de l'interface ActionsBDD.
+ * Cette classe gère toutes les opérations CRUD (Create, Read, Update, Delete)
+ * pour les entités Programmeur et Projet en utilisant JDBC pour communiquer avec PostgreSQL.
+ *
+ * @author Jerome TRAN
+ * @version 1.0
+ */
 public class ActionsBDDImpl implements ActionsBDD {
 
+    /** Requête SQL pour sélectionner tous les programmeurs */
     private static final String SELECT_ALL_PROGRAMMEURS =
             "SELECT * FROM programmeur";
 
+    /** Requête SQL pour sélectionner un programmeur par son ID */
     private static final String SELECT_PROGRAMMEUR_BY_ID =
             "SELECT * FROM programmeur WHERE id_programmeur = ?";
 
+    /** Requête SQL pour supprimer un programmeur */
     private static final String DELETE_PROGRAMMEUR =
             "DELETE FROM programmeur WHERE id_programmeur = ?";
 
+    /** Requête SQL pour insérer un nouveau programmeur */
     private static final String INSERT_PROGRAMMEUR =
             "INSERT INTO programmeur (nom, prenom, an_naissance, salaire, prime, id_projet) VALUES (?, ?, ?, ?, ?, ?)";
 
+    /** Requête SQL pour mettre à jour le salaire d'un programmeur */
     private static final String UPDATE_SALAIRE =
             "UPDATE programmeur SET salaire = ? WHERE id_programmeur = ?";
 
+    /** Requête SQL pour mettre à jour la prime d'un programmeur */
     private static final String UPDATE_PRIME =
             "UPDATE programmeur SET prime = ? WHERE id_programmeur = ?";
 
+    /** Requête SQL pour mettre à jour le projet d'un programmeur */
     private static final String UPDATE_PROJET =
             "UPDATE programmeur SET id_projet = ? WHERE id_programmeur = ?";
 
+    /** Requête SQL pour sélectionner tous les projets */
     private static final String SELECT_ALL_PROJETS =
             "SELECT * FROM projet";
 
+    /** Requête SQL pour insérer un nouveau projet */
     private static final String INSERT_PROJET =
             "INSERT INTO projet (nom_projet, date_debut, date_fin, statut) VALUES (?, ?, ?, ?)";
 
-
+    /** Requête SQL pour détacher tous les programmeurs d'un projet */
     private static final String DETACH_PROGRAMMEURS_FROM_PROJET =
             "UPDATE programmeur SET id_projet = NULL WHERE id_projet = ?";
 
+    /** Requête SQL pour supprimer un projet */
     private static final String DELETE_PROJET =
             "DELETE FROM projet WHERE id_projet = ?";
 
+    /** Requête SQL pour sélectionner les programmeurs d'un projet spécifique */
     private static final String SELECT_PROGRAMMEURS_BY_PROJET =
             "SELECT * FROM programmeur WHERE id_projet = ?";
 
     // ================= PROGRAMMEURS =================
 
+    /**
+     * Récupère tous les programmeurs de la base de données.
+     *
+     * @return Une liste contenant tous les programmeurs, ou une liste vide en cas d'erreur
+     */
     @Override
     public List<Programmeur> afficherTousLesProgrammeurs() {
         List<Programmeur> list = new ArrayList<>();
@@ -66,6 +90,12 @@ public class ActionsBDDImpl implements ActionsBDD {
         return list;
     }
 
+    /**
+     * Récupère un programmeur spécifique par son identifiant.
+     *
+     * @param id L'identifiant du programmeur à rechercher
+     * @return Le programmeur correspondant, ou null s'il n'existe pas ou en cas d'erreur
+     */
     @Override
     public Programmeur afficherProgrammeurParId(int id) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -82,6 +112,13 @@ public class ActionsBDDImpl implements ActionsBDD {
         return null;
     }
 
+    /**
+     * Ajoute un nouveau programmeur dans la base de données.
+     * Si l'ID du projet est 0, le programmeur n'est assigné à aucun projet (NULL en base).
+     *
+     * @param p Le programmeur à ajouter
+     * @return true si l'ajout a réussi, false en cas d'erreur
+     */
     @Override
     public boolean ajouterProgrammeur(Programmeur p) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -107,6 +144,12 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
+    /**
+     * Supprime un programmeur de la base de données.
+     *
+     * @param id L'identifiant du programmeur à supprimer
+     * @return true si la suppression a réussi, false en cas d'erreur
+     */
     @Override
     public boolean supprimerProgrammeur(int id) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -121,6 +164,13 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
+    /**
+     * Modifie le salaire d'un programmeur.
+     *
+     * @param id L'identifiant du programmeur
+     * @param salaire Le nouveau montant du salaire
+     * @return true si la modification a réussi, false en cas d'erreur
+     */
     @Override
     public boolean modifierSalaire(int id, double salaire) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -136,6 +186,13 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
+    /**
+     * Modifie la prime d'un programmeur.
+     *
+     * @param id L'identifiant du programmeur
+     * @param prime Le nouveau montant de la prime
+     * @return true si la modification a réussi, false en cas d'erreur
+     */
     @Override
     public boolean modifierPrime(int id, double prime) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -151,6 +208,14 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
+    /**
+     * Modifie le projet assigné à un programmeur.
+     * Si idProjet est 0, le programmeur est retiré de tout projet (NULL en base).
+     *
+     * @param id L'identifiant du programmeur
+     * @param idProjet L'identifiant du nouveau projet (0 pour retirer du projet)
+     * @return true si la modification a réussi, false en cas d'erreur
+     */
     @Override
     public boolean modifierProjet(int id, int idProjet) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -170,6 +235,12 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
+    /**
+     * Récupère tous les programmeurs assignés à un projet spécifique.
+     *
+     * @param idProjet L'identifiant du projet
+     * @return Une liste contenant tous les programmeurs du projet, ou une liste vide en cas d'erreur
+     */
     @Override
     public List<Programmeur> afficherProgrammeursParProjet(int idProjet) {
         List<Programmeur> list = new ArrayList<>();
@@ -192,6 +263,11 @@ public class ActionsBDDImpl implements ActionsBDD {
 
     // ================= PROJETS =================
 
+    /**
+     * Récupère tous les projets de la base de données.
+     *
+     * @return Une liste contenant tous les projets, ou une liste vide en cas d'erreur
+     */
     @Override
     public List<Projet> afficherProjets() {
         List<Projet> projets = new ArrayList<>();
@@ -216,6 +292,12 @@ public class ActionsBDDImpl implements ActionsBDD {
         return projets;
     }
 
+    /**
+     * Ajoute un nouveau projet dans la base de données.
+     *
+     * @param p Le projet à ajouter
+     * @return true si l'ajout a réussi, false en cas d'erreur
+     */
     @Override
     public boolean ajouterProjet(Projet p) {
         try (Connection conn = ConnexionBDD.getConnection();
@@ -234,7 +316,18 @@ public class ActionsBDDImpl implements ActionsBDD {
         }
     }
 
-    // ✅ NOUVEAU : suppression propre
+    /**
+     * Supprime un projet de la base de données de manière propre.
+     * Cette méthode effectue deux opérations dans une transaction :
+     * <ol>
+     *   <li>Détache tous les programmeurs assignés au projet (met leur id_projet à NULL)</li>
+     *   <li>Supprime le projet</li>
+     * </ol>
+     * Si une erreur survient, la transaction est annulée automatiquement.
+     *
+     * @param idProjet L'identifiant du projet à supprimer
+     * @return true si la suppression a réussi, false en cas d'erreur
+     */
     @Override
     public boolean supprimerProjet(int idProjet) {
         try (Connection conn = ConnexionBDD.getConnection()) {
@@ -262,6 +355,15 @@ public class ActionsBDDImpl implements ActionsBDD {
 
     // ================= MAPPING =================
 
+    /**
+     * Mappe une ligne de ResultSet vers un objet Programmeur.
+     * Cette méthode utilitaire facilite la conversion des résultats SQL en objets Java.
+     * Gère correctement les valeurs NULL pour l'ID du projet.
+     *
+     * @param rs Le ResultSet contenant les données du programmeur
+     * @return Un objet Programmeur construit à partir des données du ResultSet
+     * @throws SQLException Si une erreur survient lors de la lecture des données
+     */
     private Programmeur mapProgrammeur(ResultSet rs) throws SQLException {
         Programmeur p = new Programmeur();
         p.setIdProgrammeur(rs.getInt("id_programmeur"));

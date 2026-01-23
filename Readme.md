@@ -2,6 +2,10 @@
 
 Application Java complète de gestion de programmeurs et de projets avec API REST et interface console interactive.
 
+Réalisé par **Tran Jérome** - **Mychalski Ronan** - **Vong A Lau Benoit**
+
+Groupe **ING2 - LSI2**
+
 ## 📋 Table des matières
 
 - [Fonctionnalités](#-fonctionnalités)
@@ -62,7 +66,7 @@ JavaBDD/
 
 ## 📦 Prérequis
 
-- **Docker** et **Docker Compose** installés
+- **Docker**, **Docker Desktop** et **Docker Compose** installés
 - Port **8080** disponible pour l'API REST
 - Port **5432** disponible pour PostgreSQL
 
@@ -280,8 +284,8 @@ docker exec -it my_postgres psql -U myuser -d mydb
 
 ## 👤 Auteur
 
+Jérome TRAN - Ronan MYCHALSKI - Benoit VONG A LAU
+
 Projet réalisé dans le cadre du cours ALSI54 - Programmation en Java - EFREI Paris
 
 ---
-
-**Bon développement ! 🚀**
